@@ -21,13 +21,13 @@ Fitness Activity and Progress Tracking App is a mobile application designed to m
 - User login
 - Role-based access (Admin and User)
 
-### Daily Progress Tracking
+### Daily Progress Tracking (User)
 - Create daily progress entries (e.g., weight, exercise type, goals, achievements)
 - View current and past progress records
 - Update daily entries
 - Delete entries
 
-### Workout Plan Management
+### Workout Plan Management (Admin)
 - Create workout activities (cardio, strength, aerobic, etc.)
 - View all activities 
 - Update activities 

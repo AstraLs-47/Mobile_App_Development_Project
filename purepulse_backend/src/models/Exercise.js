@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 class Exercise {
-  static async findAll(categoryId, difficulty, limit = 50, offset = 0) {
+  static async findAll(categoryId, limit = 50, offset = 0) {
     let query = `
       SELECT e.*, c.name as category_name 
       FROM exercises e
@@ -14,10 +14,6 @@ class Exercise {
     if (categoryId) {
       query += ` AND e.category_id = $${paramCount++}`;
       values.push(categoryId);
-    }
-    if (difficulty) {
-      query += ` AND e.difficulty = $${paramCount++}`;
-      values.push(difficulty);
     }
 
     query += ` ORDER BY e.created_at DESC LIMIT $${paramCount++} OFFSET $${paramCount++}`;
@@ -35,62 +31,48 @@ class Exercise {
        WHERE e.id = $1`,
       [id]
     );
-    return result.rows[0];
+    return result.rows[0] || null;
   }
 
-  static async create(data) {
+  static async create({ name, description, categoryId, phases, createdBy }) {
     const result = await pool.query(
-      `INSERT INTO exercises (name, description, category_id, difficulty, muscle_groups, instructions, video_url, image_url, calories_per_minute)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      `INSERT INTO exercises (name, description, category_id, phases, created_by)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [
-        data.name,
-        data.description,
-        data.categoryId,
-        data.difficulty,
-        data.muscleGroups,
-        data.instructions,
-        data.videoUrl,
-        data.imageUrl,
-        data.caloriesPerMinute
-      ]
+      [name, description || null, categoryId || null, phases ? JSON.stringify(phases) : null, createdBy]
     );
     return result.rows[0];
   }
 
-  static async update(id, data) {
-    const updates = [];
+  static async update(id, { name, description, categoryId, phases }) {
+    const fields = [];
     const values = [];
     let paramCount = 1;
 
-    const fields = {
-      name: 'name',
-      description: 'description',
-      categoryId: 'category_id',
-      difficulty: 'difficulty',
-      muscleGroups: 'muscle_groups',
-      instructions: 'instructions',
-      videoUrl: 'video_url',
-      imageUrl: 'image_url',
-      caloriesPerMinute: 'calories_per_minute'
-    };
-
-    for (const [key, dbField] of Object.entries(fields)) {
-      if (data[key] !== undefined) {
-        updates.push(`${dbField} = $${paramCount++}`);
-        values.push(data[key]);
-      }
+    if (name !== undefined) {
+      fields.push(`name = $${paramCount++}`);
+      values.push(name);
+    }
+    if (description !== undefined) {
+      fields.push(`description = $${paramCount++}`);
+      values.push(description);
+    }
+    if (categoryId !== undefined) {
+      fields.push(`category_id = $${paramCount++}`);
+      values.push(categoryId);
+    }
+    if (phases !== undefined) {
+      fields.push(`phases = $${paramCount++}`);
+      values.push(JSON.stringify(phases));
     }
 
-    if (updates.length === 0) {
-      return Exercise.findById(id);
-    }
+    if (fields.length === 0) return null;
 
-    updates.push('updated_at = CURRENT_TIMESTAMP');
+    fields.push(`updated_at = CURRENT_TIMESTAMP`);
     values.push(id);
 
     const result = await pool.query(
-      `UPDATE exercises SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING *`,
+      `UPDATE exercises SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
       values
     );
     return result.rows[0];
@@ -101,7 +83,7 @@ class Exercise {
     return result.rows[0];
   }
 
-  static async count(categoryId, difficulty) {
+  static async count(categoryId) {
     let query = 'SELECT COUNT(*) as total FROM exercises WHERE 1=1';
     const values = [];
     let paramCount = 1;
@@ -109,10 +91,6 @@ class Exercise {
     if (categoryId) {
       query += ` AND category_id = $${paramCount++}`;
       values.push(categoryId);
-    }
-    if (difficulty) {
-      query += ` AND difficulty = $${paramCount++}`;
-      values.push(difficulty);
     }
 
     const result = await pool.query(query, values);

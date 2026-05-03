@@ -8,13 +8,13 @@ class Category {
 
   static async findById(id) {
     const result = await pool.query('SELECT * FROM categories WHERE id = $1', [id]);
-    return result.rows[0];
+    return result.rows[0] || null;
   }
 
-  static async create(data) {
+  static async create({ name, icon }) {
     const result = await pool.query(
-      'INSERT INTO categories (name, description, icon) VALUES ($1, $2, $3) RETURNING *',
-      [data.name, data.description, data.icon]
+      'INSERT INTO categories (name, icon) VALUES ($1, $2) RETURNING *',
+      [name, icon || null]
     );
     return result.rows[0];
   }

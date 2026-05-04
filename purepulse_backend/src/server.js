@@ -9,6 +9,7 @@ const progressRoutes = require('./routes/progressRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const productRoutes = require('./routes/productRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const announcementRoutes = require('./routes/announcementRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/uploads', uploadRoutes);
+app.use('/api/announcements', announcementRoutes);
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });

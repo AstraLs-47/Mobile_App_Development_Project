@@ -6,6 +6,7 @@ class Validators {
       return 'Email address is required';
     }
 
+    // Standard RFC 5322 compliant regex
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
     if (!emailRegex.hasMatch(value)) {

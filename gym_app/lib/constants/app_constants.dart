@@ -8,7 +8,7 @@ class AppConstants {
   static const double paddingExtraLarge = 32.0;
   static const double paddingSuperExtraLarge = 48.0;
 
-  // Sizes
+  // Sizes - Manually refined for Kihlot Executive UI
   static const double buttonHeight = 56.5;
 
   // Border Radius

@@ -49,7 +49,7 @@ class RouteConstants {
   static const String adminAnnouncementsRel = 'announcements';
   static const String adminAnnouncementsName = 'adminAnnouncements';
 
-  // Full paths (for backward compatibility if needed, but goNamed uses names)
+  // Full paths
   static const String trackingAdd = '$tracking/$trackingAddRel';
   static const String trackingEdit = '$tracking/$trackingEditRel';
   static const String adminActivities = '$admin/$adminActivitiesRel';

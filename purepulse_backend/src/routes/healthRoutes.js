@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const healthController = require('../controllers/healthController');
-const { auth, authorize } = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 
-router.get('/latest', auth, healthController.getLatestMetrics);
-router.get('/', auth, healthController.listHistory);
-router.get('/:id', auth, healthController.getById);
-router.post('/', auth, healthController.addEntry);
-router.put('/:id', auth, healthController.updateMetrics);
-router.delete('/:id', auth, healthController.deleteEntry);
+router.use(authenticate);
+
+router.get('/latest', (req, res, next) => healthController.getLatestMetrics(req, res, next));
+router.get('/', (req, res, next) => healthController.listHistory(req, res, next));
+router.post('/', (req, res, next) => healthController.addEntry(req, res, next));
+router.get('/:id', (req, res, next) => healthController.getById(req, res, next));
+router.put('/:id', (req, res, next) => healthController.updateMetrics(req, res, next));
+router.delete('/:id', (req, res, next) => healthController.deleteEntry(req, res, next));
 
 module.exports = router;

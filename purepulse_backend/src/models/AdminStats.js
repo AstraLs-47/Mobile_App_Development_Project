@@ -29,7 +29,7 @@ class AdminStats {
         COUNT(*) as total_entries,
         COUNT(DISTINCT user_id) as active_users,
         SUM(duration_minutes) as total_minutes,
-        SUM(weight * reps * sets) as total_volume
+        SUM(sets * reps) as total_volume
       FROM progress_entries
       WHERE entry_date > NOW() - INTERVAL '30 days'
     `);
@@ -50,9 +50,9 @@ class AdminStats {
     const result = await pool.query(`
       SELECT 
         COUNT(*) as total_products,
-        COUNT(CASE WHEN is_active = true THEN 1 END) as active_products,
-        SUM(stock_quantity) as total_stock,
-        AVG(price) as average_price
+        AVG(price) as average_price,
+        MIN(price) as min_price,
+        MAX(price) as max_price
       FROM products
     `);
     return result.rows[0];
@@ -93,35 +93,35 @@ class AdminStats {
 
     return {
       users: {
-        total: parseInt(userStats.total_users, 10) || 0,
-        admins: parseInt(userStats.admin_count, 10) || 0,
-        regular: parseInt(userStats.regular_user_count, 10) || 0,
-        newLast30Days: parseInt(userStats.new_users_30_days, 10) || 0
+        total: parseInt(userStats.total_users) || 0,
+        admins: parseInt(userStats.admin_count) || 0,
+        regular: parseInt(userStats.regular_user_count) || 0,
+        newLast30Days: parseInt(userStats.new_users_30_days) || 0
       },
       exercises: {
-        total: parseInt(exerciseStats.total_exercises, 10) || 0,
-        categoriesUsed: parseInt(exerciseStats.categories_used, 10) || 0
+        total: parseInt(exerciseStats.total_exercises) || 0,
+        categoriesUsed: parseInt(exerciseStats.categories_used) || 0
       },
       progress: {
-        entriesLast30Days: parseInt(progressStats.total_entries, 10) || 0,
-        activeUsers: parseInt(progressStats.active_users, 10) || 0,
-        totalMinutes: parseInt(progressStats.total_minutes, 10) || 0,
-        totalVolume: parseFloat(progressStats.total_volume) || 0
+        entriesLast30Days: parseInt(progressStats.total_entries) || 0,
+        activeUsers: parseInt(progressStats.active_users) || 0,
+        totalMinutes: parseInt(progressStats.total_minutes) || 0,
+        totalVolume: parseInt(progressStats.total_volume) || 0
       },
       health: {
-        totalEntries: parseInt(healthStats.total_entries, 10) || 0,
-        usersTracking: parseInt(healthStats.users_tracking, 10) || 0
+        totalEntries: parseInt(healthStats.total_entries) || 0,
+        usersTracking: parseInt(healthStats.users_tracking) || 0
       },
       products: {
-        total: parseInt(productStats.total_products, 10) || 0,
-        active: parseInt(productStats.active_products, 10) || 0,
-        totalStock: parseInt(productStats.total_stock, 10) || 0,
-        averagePrice: parseFloat(productStats.average_price) || 0
+        total: parseInt(productStats.total_products) || 0,
+        averagePrice: parseFloat(productStats.average_price) || 0,
+        minPrice: parseFloat(productStats.min_price) || 0,
+        maxPrice: parseFloat(productStats.max_price) || 0
       },
       activity: {
-        actionsLast30Days: parseInt(activityStats.total_actions, 10) || 0,
-        activeUsers: parseInt(activityStats.active_users, 10) || 0,
-        activeDays: parseInt(activityStats.active_days, 10) || 0
+        actionsLast30Days: parseInt(activityStats.total_actions) || 0,
+        activeUsers: parseInt(activityStats.active_users) || 0,
+        activeDays: parseInt(activityStats.active_days) || 0
       }
     };
   }

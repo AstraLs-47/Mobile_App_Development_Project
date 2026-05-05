@@ -1,7 +1,5 @@
 -- PurePulse Database Schema
--- Run this script to create all required tables
-
--- Drop existing tables to ensure a clean state during initialization
+-- Drop existing tables
 DROP TABLE IF EXISTS activity_logs CASCADE;
 DROP TABLE IF EXISTS announcements CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
@@ -55,13 +53,13 @@ CREATE TABLE IF NOT EXISTS exercises (
     name VARCHAR(200) NOT NULL,
     description TEXT,
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
-    difficulty VARCHAR(50),
-    muscle_groups TEXT,
+    phases JSONB,
+    difficulty VARCHAR(20) CHECK (difficulty IN ('beginner', 'intermediate', 'advanced')),
+    muscle_groups JSONB,
     instructions TEXT,
     video_url VARCHAR(500),
     image_url VARCHAR(500),
-    calories_per_minute DECIMAL(6,2),
-    phases JSONB,
+    calories_per_minute DECIMAL(5,2),
     created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -77,6 +75,7 @@ CREATE TABLE IF NOT EXISTS progress_entries (
     duration_minutes INTEGER,
     sets INTEGER,
     reps INTEGER,
+    weight DECIMAL(6,2),
     intensity VARCHAR(20) CHECK (intensity IN ('light', 'moderate', 'intense')),
     mood VARCHAR(50),
     notes TEXT,
@@ -88,17 +87,20 @@ CREATE TABLE IF NOT EXISTS progress_entries (
 CREATE TABLE IF NOT EXISTS health_metrics (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    date DATE DEFAULT CURRENT_DATE,
-    weight_kg DECIMAL(6,2),
-    height_cm DECIMAL(5,2),
+    measurement_date DATE DEFAULT CURRENT_DATE,
+    weight DECIMAL(6,2),
+    height DECIMAL(5,2),
     bmi DECIMAL(4,2),
-    heart_rate INTEGER,
+    body_fat_percentage DECIMAL(4,2),
+    muscle_mass DECIMAL(5,2),
+    water_percentage DECIMAL(4,2),
+    resting_heart_rate INTEGER,
     blood_pressure_systolic INTEGER,
     blood_pressure_diastolic INTEGER,
     blood_sugar DECIMAL(5,2),
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(user_id, date)
+    UNIQUE(user_id, measurement_date)
 );
 
 -- Products table
@@ -120,14 +122,18 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS announcements (
     id SERIAL PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
-    description TEXT NOT NULL,
+    content TEXT NOT NULL,
     date DATE DEFAULT CURRENT_DATE,
+    priority VARCHAR(20) DEFAULT 'normal',
+    is_active BOOLEAN DEFAULT true,
+    expires_at TIMESTAMP,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Activity log table (for admin analytics)
+-- Activity log table
 CREATE TABLE IF NOT EXISTS activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
@@ -140,17 +146,16 @@ CREATE TABLE IF NOT EXISTS activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create indexes for better performance
+-- Indexes
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 CREATE INDEX IF NOT EXISTS idx_exercises_category ON exercises(category_id);
 CREATE INDEX IF NOT EXISTS idx_progress_user_date ON progress_entries(user_id, entry_date);
-CREATE INDEX IF NOT EXISTS idx_health_user_date ON health_metrics(user_id, date);
+CREATE INDEX IF NOT EXISTS idx_health_user_date ON health_metrics(user_id, measurement_date);
 CREATE INDEX IF NOT EXISTS idx_activity_logs_user ON activity_logs(user_id);
 CREATE INDEX IF NOT EXISTS idx_activity_logs_created ON activity_logs(created_at);
 
--- Insert default admin user (password: admin123)
--- Note: In production, use a properly hashed password
+-- Insert default admin placeholder
 INSERT INTO users (email, password_hash, first_name, last_name, role)
 VALUES ('ADMIN_EMAIL_PLACEHOLDER', 'ADMIN_PASSWORD_PLACEHOLDER', NULL, NULL, 'admin')
 ON CONFLICT (email) DO NOTHING;

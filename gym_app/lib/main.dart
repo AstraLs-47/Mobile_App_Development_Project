@@ -1,6 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:gym_app/core/data/mock_db.dart';
-import 'package:gym_app/core/routing/app_router.dart';
+
+// Project imports:
+import 'core/data/mock_db.dart';
+import 'core/routing/app_router.dart';
+import 'core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,24 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: 'Fitness Activity Tracking App',
+      theme: AppTheme.lightTheme,
       routerConfig: AppRouter.router,
-      title: 'Kihlot',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF9E2A2B),
-          brightness: Brightness.light,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size.fromHeight(56.5),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(100.0)),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

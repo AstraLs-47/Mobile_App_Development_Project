@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-// Note: Import your constants here once you start using them in the UI
-// import 'package:gym_app/constants/app_constants.dart';
+import 'package:gym_app/core/data/mock_db.dart';
+import 'package:gym_app/core/routing/app_router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MockDB().init();
   runApp(const MyApp());
 }
 
@@ -11,33 +13,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // Updated to your project identity
+    return MaterialApp.router(
+      routerConfig: AppRouter.router,
       title: 'Kihlot',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        // Using the primary color from your Event Hub requirements
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF9E2A2B),
           brightness: Brightness.light,
         ),
-        // Applying your custom button height globally via theme
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(56.5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100.0), // borderRadiusPill
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(100.0)),
             ),
-          ),
-        ),
-      ),
-      // Placeholder home screen to avoid router import errors for now
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Kihlot App',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
       ),

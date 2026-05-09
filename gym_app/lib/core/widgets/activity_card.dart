@@ -29,7 +29,7 @@ class ActivityCard extends StatelessWidget {
     return CustomCard(
       padding: EdgeInsets.zero,
       hasShadow: true,
-      border: Border.all(color: Colors.grey.withValues(alpha: 26)),
+      border: Border.all(color: Colors.grey.withOpacity(0.1)),
       child: SizedBox(
         height: double.infinity,
         child: Column(

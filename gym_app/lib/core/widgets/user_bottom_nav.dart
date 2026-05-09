@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import '../theme/app_colors.dart';
-import '../utils/navigation_helper.dart';
+import '../routing/navigation_helper.dart';
 
 class UserBottomNav extends StatelessWidget {
   final BottomNavItem currentItem;
 
-  const UserBottomNav({
-    super.key,
-    required this.currentItem,
-  });
+  const UserBottomNav({super.key, required this.currentItem});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +16,16 @@ class UserBottomNav extends StatelessWidget {
       currentIndex: currentItem.index,
       onTap: (index) {
         if (index >= 0 && index < BottomNavItem.values.length) {
-          NavigationHelper.onBottomNavTapped(
-              context, BottomNavItem.values[index], currentItem);
+          context.onBottomNavTapped(BottomNavItem.values[index], currentItem);
         }
       },
       selectedItemColor: AppColors.primary,
       unselectedItemColor: AppColors.textSecondary,
       showUnselectedLabels: true,
-      selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      selectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+      ),
       unselectedLabelStyle: const TextStyle(fontSize: 10),
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,

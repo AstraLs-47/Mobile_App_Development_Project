@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // Project imports:
-import '../../../../core/routing/route_constants.dart';
-import '../../../../core/theme/app_colors.dart';
+import 'package:gym_app/core/routing/route_constants.dart';
+import 'package:gym_app/core/theme/app_colors.dart';
 
 class AdminBottomNav extends StatelessWidget {
   final int currentIndex;

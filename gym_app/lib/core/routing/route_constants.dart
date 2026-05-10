@@ -1,9 +1,7 @@
 class RouteConstants {
   RouteConstants._();
-
   static const String root = '/';
   static const String rootName = 'root';
-
   static const String signIn = '/sign-in';
   static const String signInName = 'signIn';
 
@@ -12,7 +10,6 @@ class RouteConstants {
 
   static const String onboarding = '/onboarding';
   static const String onboardingName = 'onboarding';
-
   static const String dashboard = '/dashboard';
   static const String dashboardName = 'dashboard';
 
@@ -36,13 +33,11 @@ class RouteConstants {
 
   static const String exerciseDetail = '/exercise-detail';
   static const String exerciseDetailName = 'exerciseDetail';
-
   static const String trackingAddRel = 'add';
   static const String trackingAddName = 'trackingAdd';
 
   static const String trackingEditRel = 'edit';
   static const String trackingEditName = 'trackingEdit';
-
   static const String admin = '/admin';
   static const String adminName = 'admin';
 
@@ -54,7 +49,6 @@ class RouteConstants {
 
   static const String adminAnnouncementsRel = 'announcements';
   static const String adminAnnouncementsName = 'adminAnnouncements';
-
   static const String trackingAdd = '$tracking/$trackingAddRel';
   static const String trackingEdit = '$tracking/$trackingEditRel';
 

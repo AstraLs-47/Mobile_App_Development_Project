@@ -1,4 +1,4 @@
-class Announcement {
+ class Announcement {
   final String id;
   final String title;
   final String description;

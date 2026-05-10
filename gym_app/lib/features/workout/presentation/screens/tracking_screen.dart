@@ -402,7 +402,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
   void _showDeleteDialog(String id) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -420,12 +420,10 @@ class _TrackingScreenState extends State<TrackingScreen> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () async {
-                    final currentContext = context;
                     await _workoutService.deleteWorkout(id);
                     _refreshLogs();
-                    if (mounted) {
-                      currentContext.pop();
-                    }
+                    if (!mounted) return;
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0E6CF2),
@@ -443,7 +441,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => context.pop(),
+                  onPressed: () => Navigator.of(dialogContext).pop(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFF1F5F9),
                     shape: RoundedRectangleBorder(

@@ -398,7 +398,6 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
                           flex: 3,
                           child: ElevatedButton(
                             onPressed: () async {
-                              final currentContext = context;
                               if (title.isNotEmpty) {
                                 if (isEdit && initialData != null) {
                                   final product = Product(
@@ -422,10 +421,10 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
                                   );
                                   await _productService.addProduct(product);
                                 }
+                                if (!mounted) return;
+                                final currentContext = context;
                                 _refreshProducts();
-                                if (mounted) {
-                                  Navigator.pop(currentContext);
-                                }
+                                Navigator.of(currentContext).pop();
                               }
                             },
                             style: ElevatedButton.styleFrom(

@@ -3,7 +3,7 @@ import '../../../core/data/mock_db.dart';
 import '../../../core/models/announcement_model.dart';
 
 class AnnouncementService {
-  final MockDB _db = MockDB();
+  final MockDB _db = MockDB(); 
 
   Future<List<Announcement>> fetchAnnouncements() async {
     await Future.delayed(const Duration(seconds: 1));

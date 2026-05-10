@@ -9,7 +9,7 @@ import '../../features/admin/presentation/screens/admin_activities_screen.dart';
 import '../../features/admin/presentation/screens/admin_announcements_screen.dart';
 import '../../features/admin/presentation/screens/admin_products_screen.dart';
 import '../../features/admin/presentation/screens/command_center_screen.dart';
-import '../../features/announcement/presentation/screens/announcements_screen.dart';
+ import '../../features/announcement/presentation/screens/announcements_screen.dart';
 import '../../features/auth/presentation/screens/landing_screen.dart';
 import '../../features/auth/presentation/screens/onboarding_screens.dart';
 import '../../features/auth/presentation/screens/sign_in_screen.dart';

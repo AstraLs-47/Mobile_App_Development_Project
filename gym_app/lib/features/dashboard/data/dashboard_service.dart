@@ -1,5 +1,5 @@
 // Project imports:
-import '../../../core/data/mock_db.dart';
+import '../../../core/services/mock_db.dart';
 
 class DashboardService {
   final MockDB _db = MockDB();

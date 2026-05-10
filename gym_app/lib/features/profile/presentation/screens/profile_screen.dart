@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // Project imports:
-import '../../../../../core/constants/route_constants.dart';
-import '../../../../../core/services/mock_db.dart';
-import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../../core/widgets/user_bottom_nav.dart';
+import '../../../../core/constants/route_constants.dart';
+import '../../../../core/services/mock_db.dart';
+import '../../../../core/utils/navigation_helper.dart';
+import '../../../../core/widgets/user_bottom_nav.dart';
 import 'package:gym_app/features/auth/data/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {

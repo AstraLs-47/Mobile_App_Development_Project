@@ -1,6 +1,6 @@
 // Project imports:
-import '../../../../core/models/user_model.dart';
-import '../../../auth/data/auth_service.dart';
+import '../../../core/models/user_model.dart';
+import '../../auth/data/auth_service.dart';
 
 class ProfileService {
   final AuthService _auth = AuthService();
